@@ -3,6 +3,7 @@
 }
 
 body {
+  font-family: "Inter", sans-serif;
   padding: 0;
   margin: 0;
   background-color: var(--bg);
@@ -51,7 +52,6 @@ header {
 }
 
 header h1 {
-  justify-self: center;
   text-align: center;
   margin-bottom: 0.25rem;
 }
@@ -79,10 +79,11 @@ header a:hover {
   padding: 6px 12px;
   border-radius: 999px;
   border: 1px solid var(--line);
-  background: var(--card);
+  background-color: inherit;
   color: var(--line);
   cursor: pointer;
   font-size: 14px;
+  outline: none;
 }
 
 button {
@@ -112,11 +113,6 @@ header ul {
   gap: 0.5rem;
   padding: 0;
 }
-
-/* #app {
-  max-width: 1100px;
-  margin: 0 auto;
-} */
 
 /* Row of search and select inputs */
 #row {
@@ -172,7 +168,7 @@ select:focus {
 }
 
 .country-card figcaption {
-  font-weight: bold;
+  font-weight: 600;
   text-align: left;
   margin-top: 0.5rem;
 }
@@ -198,7 +194,7 @@ details summary::marker {
 }
 
 .bolder {
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .borders {
