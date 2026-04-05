@@ -113,10 +113,10 @@ header ul {
   padding: 0;
 }
 
-#app {
-  /* max-width: 1100px; */
+/* #app {
+  max-width: 1100px;
   margin: 0 auto;
-}
+} */
 
 /* Row of search and select inputs */
 #row {
@@ -137,7 +137,7 @@ select:focus {
   background-color: var(--bg);
   color: var(--text);
   width: 45%;
-  height: 10%;
+  /* height: 10%; */
   padding: 0.35rem;
   margin: 0.75rem;
   border-radius: var(--radius);
@@ -155,8 +155,6 @@ select:focus {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
-  padding: 0.25rem;
-  justify-items: center;
   border: 1px solid var(--muted);
   border-radius: var(--radius);
   padding: 0.5rem;
