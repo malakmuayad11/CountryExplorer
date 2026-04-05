@@ -8,9 +8,9 @@ import {
 } from "./api.js";
 
 import {
-  addToLocalStorage,
+  addToFavoriteCountries,
+  addToTheme,
   getFromLocalStorage,
-  removeFromLocalStorage,
 } from "./storage.js";
 
 const UI = {
@@ -82,7 +82,8 @@ function setLoading(isLoading) {
   UI.loading.style.display = isLoading ? "flex" : "none";
 }
 
-export async function loadAllCountries() {
+// loads all countries into the webpage
+async function loadAllCountries() {
   setLoading(true);
 
   try {
@@ -99,7 +100,7 @@ export async function loadAllCountries() {
   }
 }
 
-export async function searchCountry() {
+async function searchCountry() {
   const countryName = UI.searchCountries.value.trim();
   if (countryName === "") {
     loadAllCountries();
@@ -118,7 +119,7 @@ export async function searchCountry() {
   }
 }
 
-export async function searchCountryByCode(countryCode) {
+async function searchCountryByCode(countryCode) {
   if (!countryCode) return;
   setLoading(true);
   try {
@@ -133,7 +134,7 @@ export async function searchCountryByCode(countryCode) {
   }
 }
 
-export async function filterRegion() {
+async function filterRegion() {
   const region = UI.filterByRegion.value;
   if (region === "") {
     loadAllCountries();
@@ -153,7 +154,7 @@ export async function filterRegion() {
   }
 }
 
-export async function showFavoriteCountries() {
+async function showFavoriteCountries() {
   setLoading(true);
   try {
     let results = "";
@@ -176,12 +177,13 @@ function showToast(message) {
 
 function applyTheme(theme) {
   UI.root.setAttribute("data-theme", theme);
-  localStorage.setItem("theme", theme);
+  addToTheme(theme);
   UI.themeToggleBtn.setAttribute("aria-pressed", String(theme === "dark")); // reflect state
   UI.themeToggleBtn.querySelector("span").textContent =
     theme === "dark" ? "Light Mode" : "Dark Mode"; // user-friendly label
 }
 
+// Handles adding to or removing from favorite countries
 function handleFavorites(e) {
   if (!e.target.matches("input")) return;
 
@@ -193,12 +195,12 @@ function handleFavorites(e) {
 
   if (e.target.checked) {
     favoriteCountries.push(countryName);
-    addToLocalStorage(JSON.stringify(favoriteCountries));
+    addToFavoriteCountries(JSON.stringify(favoriteCountries));
     showToast("✅ Country is added to favorites successfully!");
   } else {
     // The checkbox is unchecked, so we remove the country from favorits
     favoriteCountries = favoriteCountries.filter((c) => c !== countryName);
-    addToLocalStorage(JSON.stringify(favoriteCountries));
+    addToFavoriteCountries(JSON.stringify(favoriteCountries));
     showToast("✅ Country is removed from favorites.");
   }
 }
