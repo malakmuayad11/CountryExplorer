@@ -125,6 +125,11 @@ header ul {
   border-bottom: 1px solid var(--muted);
 }
 
+select {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
 input[type="search"],
 select,
 input[type="search"]:focus,
