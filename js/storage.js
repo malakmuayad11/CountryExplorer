@@ -8,6 +8,10 @@ export function addToTheme(value) {
   localStorage.setItem("theme", value);
 }
 
-export function getFromLocalStorage() {
+export function getTheme() {
+  return localStorage.getItem("theme");
+}
+
+export function getFavoriteCountries() {
   return localStorage.getItem("favoriteCountries");
 }

@@ -10,7 +10,8 @@ import {
 import {
   addToFavoriteCountries,
   addToTheme,
-  getFromLocalStorage,
+  getFavoriteCountries,
+  getTheme,
 } from "./storage.js";
 
 const UI = {
@@ -25,7 +26,7 @@ const UI = {
   themeToggleBtn: document.getElementById("themeToggle"),
 };
 
-let favoriteCountries = JSON.parse(getFromLocalStorage()) || [];
+let favoriteCountries = JSON.parse(getFavoriteCountries()) || [];
 
 function debounce(fn, delay) {
   let timer;
@@ -220,7 +221,7 @@ function flipTheme() {
 UI.themeToggleBtn.addEventListener("click", flipTheme);
 
 // Initialize UI from current attribute or default to light
-applyTheme(UI.root.getAttribute("data-theme") || "light");
+applyTheme(getTheme() || "light");
 
 await loadAllCountries(); // Initialy load all countries in the webpage
 
