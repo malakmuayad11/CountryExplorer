@@ -2,7 +2,7 @@
 A Front-end web application built with HTML, CSS, and JavaScript (vanilla JS). The application displays countries all around the world, enables searching for a country, filters countries by region, and saves countries to favorites.
 
 ## ✅ Features
-- 🛜 Displays countries from the Rest Countries API.
+- 🛜 Fetches and displays countries from the Rest Countries API.
 - ℹ️ Shows information for all countries.
 - ⭐ Add/remove countries to favorites (local storage).
 - 🌍 Shows the country's border.
@@ -10,11 +10,11 @@ A Front-end web application built with HTML, CSS, and JavaScript (vanilla JS). T
 - 📱Responsive design techniques, to adapt to different screen sizes.
 
 ## ⚙️ Technologies:
-- HTML
-- CSS
-- Vanilla JavaScript
+- HTML5
+- CSS3
+- JavaScript (ES6+)
 - Local Storage
-- Rest Countries API
+- Rest API
 
 ## 🚀 How to Run
 1. Clone the repository:
@@ -24,10 +24,19 @@ A Front-end web application built with HTML, CSS, and JavaScript (vanilla JS). T
 
 ## 📸 Screenshots
 
+### 🏠 Home Screen
 ![Home Screen](./screenshots/home-screen.png)
+
+### 🌙 Dark Mode
 ![Dark Mode Screen](./screenshots/dark-mode.png)
+
+### 🔍 Search
 ![Search Country](./screenshots/search-country.png)
+
+### 🌍 Filter
 ![Filter by Region](./screenshots/filter-by-region.png)
+
+### ⭐ Favorites
 ![Favorites](./screenshots/favorites.png)
 
 ## 👩‍💻 Author
