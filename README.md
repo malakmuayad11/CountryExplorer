@@ -2,10 +2,10 @@
 A Front-end web application built with HTML, CSS, and JavaScript (vanilla JS). The application displays countries all around the world, enables searching for a country, filters countries by region, and saves countries to favorites.
 
 ## ✅ Features
-🛜 Fetches and displays countries from the Rest Countries API.
-ℹ️ Displays detailed information for each country.
-⭐ Add/remove countries to favorites (local storage).
-☀️ Enable light and dark modes.
+- 🛜 Fetches and displays countries from the Rest Countries API.
+- ℹ️ Displays detailed information for each country.
+- ⭐ Add/remove countries to favorites (local storage).
+- ☀️ Enable light and dark modes.
 
 📱Responsive design techniques, to adapt to different screen sizes.
 ## ⚙️ Technologies:
