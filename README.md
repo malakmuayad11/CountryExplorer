@@ -27,7 +27,7 @@ A Front-end web application built with HTML, CSS, and JavaScript (vanilla JS). T
 ![Home Screen](./screenshots/home-screen.png)
 ![Dark Mode Screen](./screenshots/dark-mode.png)
 ![Search Country](./screenshots/search-country.png)
-![Filter by Region](./screenshots/fiilter-by-region.png)
+![Filter by Region](./screenshots/filter-by-region.png)
 ![Favorites](./screenshots/favorites.png)
 
 ## 👩‍💻 Author
