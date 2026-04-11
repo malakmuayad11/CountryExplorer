@@ -3,11 +3,10 @@ A Front-end web application built with HTML, CSS, and JavaScript (vanilla JS). T
 
 ## ✅ Features
 - 🛜 Displays countries from the Rest Countries API.
-- 🏁 Shows information for all countries.
-- 🎨 Add/remove countries to favorites (local storage).
-- 🔒 Shows the country's border.
-- 🔀 Tracks score throughout the quiz.
-- 💯 Enable light and dark modes.
+- ℹ️ Shows information for all countries.
+- ⭐ Add/remove countries to favorites (local storage).
+- 🌍 Shows the country's border.
+- ☀️ Enable light and dark modes.
 - 📱Responsive design techniques, to adapt to different screen sizes.
 
 ## ⚙️ Technologies:
@@ -25,10 +24,11 @@ A Front-end web application built with HTML, CSS, and JavaScript (vanilla JS). T
 
 ## 📸 Screenshots
 
-![Quiz Screen](./screenshots/startQuiz.png)
-![Correct Answer Screen](./screenshots/correctAnswer.png)
-![Wrong Answer Screen](./screenshots/wrongAnswer.png)
-![Result Screen](./screenshots/results.png)
+![Home Screen](./screenshots/home-screen.png)
+![Dark Mode Screen](./screenshots/dark-mode.png)
+![Search Country](./screenshots/search-country.png)
+![Filter by Region](./screenshots/fiilter-by-region.png)
+![Favorites](./screenshots/favorites.png)
 
 ## 👩‍💻 Author
 **Malak Muayad**  
