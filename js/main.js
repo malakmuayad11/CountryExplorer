@@ -26,7 +26,7 @@ const UI = {
   themeToggleBtn: document.getElementById("themeToggle"),
 };
 
-let favoriteCountries = JSON.parse(getFavoriteCountries()) || [];
+let favoriteCountries = new Set(JSON.parse(getFavoriteCountries()) || []);
 
 function debounce(fn, delay) {
   let timer;
@@ -55,7 +55,7 @@ function getBorders(country) {
 }
 
 function handleCheckedStatus(countryName) {
-  return favoriteCountries.includes(countryName) ? "checked" : "";
+  return favoriteCountries.has(countryName) ? "checked" : "";
 }
 
 // Returns template to fill in the webpage for each country
@@ -89,10 +89,7 @@ async function loadAllCountries() {
 
   try {
     const countries = await getAllCountries();
-    let results = "";
-
-    for (let c of countries) results += fillTemplate(c);
-    UI.countriesContainer.innerHTML = results;
+    UI.countriesContainer.innerHTML = countries.map(fillTemplate).join("");
   } catch (error) {
     console.log(error);
     UI.countriesContainer.innerHTML = "<p>Failed to load countries</p>";
@@ -158,10 +155,10 @@ async function filterRegion() {
 async function showFavoriteCountries() {
   setLoading(true);
   try {
-    let results = "";
-    for (let country of favoriteCountries)
-      results += fillTemplate(await getCountryByName(country));
-    UI.countriesContainer.innerHTML = results;
+    const countries = await Promise.all(
+      [...favoriteCountries].map((c) => getCountryByName(c)),
+    );
+    UI.countriesContainer.innerHTML = countries.map(fillTemplate).join("");
   } catch (error) {
     console.log(error);
   } finally {
@@ -195,13 +192,13 @@ function handleFavorites(e) {
   if (!countryName) return;
 
   if (e.target.checked) {
-    favoriteCountries.push(countryName);
+    favoriteCountries.add(countryName);
     addToFavoriteCountries(JSON.stringify(favoriteCountries));
     showToast("✅ Country is added to favorites successfully!");
   } else {
     // The checkbox is unchecked, so we remove the country from favorits
-    favoriteCountries = favoriteCountries.filter((c) => c !== countryName);
-    addToFavoriteCountries(JSON.stringify(favoriteCountries));
+    favoriteCountries.delete(countryName);
+    addToFavoriteCountries(JSON.stringify([...favoriteCountries]));
     showToast("✅ Country is removed from favorites.");
   }
 }
