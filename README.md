@@ -6,8 +6,8 @@ A Front-end web application built with HTML, CSS, and JavaScript (vanilla JS). T
 - ℹ️ Displays detailed information for each country.
 - ⭐ Add/remove countries to favorites (local storage).
 - ☀️ Enable light and dark modes.
+- 📱Responsive design techniques, to adapt to different screen sizes.
 
-📱Responsive design techniques, to adapt to different screen sizes.
 ## ⚙️ Technologies:
 - HTML5
 - CSS3
