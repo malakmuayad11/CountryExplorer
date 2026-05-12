@@ -22,10 +22,9 @@ A Front-end web application built with HTML, CSS, JavaScript, and TypeScript. Th
 1. Clone the repository:
    ```bash
    git clone https://github.com/malakmuayad11/CountryExplorer.git
-2. Compile TypeScript:
-```bash
+2. Compile TypeScript: ```bash
 npx tsc
-4. Open index.html in your browser
+3. Open index.html in your browser
 
 ## 📸 Screenshots
 
