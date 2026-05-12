@@ -10,13 +10,13 @@ export class Country {
     public languages: string[],
     public borders: string[],
   ) {
-    capital = [];
-    languages = [];
-    borders = [];
+    this.capital = [];
+    this.languages = [];
+    this.borders = [];
   }
 }
 
-export async function getAllCountries(): Promise<Country[] | undefined> {
+export async function getAllCountries(): Promise<Country[]> {
   const urlAll: URL = new URL("https://restcountries.com/v3.1/all");
   urlAll.searchParams.set(
     "fields",
@@ -42,6 +42,7 @@ export async function getAllCountries(): Promise<Country[] | undefined> {
     });
   } catch (error) {
     console.log(error);
+    throw error;
   }
 }
 
@@ -79,9 +80,7 @@ export async function getCountryByName(
   }
 }
 
-export async function getByRegion(
-  region: string,
-): Promise<Country[] | undefined> {
+export async function getByRegion(region: string): Promise<Country[]> {
   if (!region) throw new Error("Please provide a valid region name");
 
   const urlGetByRegion: URL = new URL("https://restcountries.com/v3.1/region");
@@ -109,6 +108,7 @@ export async function getByRegion(
     });
   } catch (error) {
     console.log(error);
+    throw error;
   }
 }
 
