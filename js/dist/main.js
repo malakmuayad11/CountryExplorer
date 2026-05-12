@@ -1,13 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 import { getAllCountries, getCountryByName, getByRegion, getCountryByCode, } from "./api.js";
 import { addToFavoriteCountries, addToTheme, getFavoriteCountries, getTheme, } from "./storage.js";
 const UI = {
@@ -21,12 +12,14 @@ const UI = {
     root: document.documentElement,
     themeToggleBtn: document.getElementById("themeToggle"),
 };
-let favoriteCountries = new Set(JSON.parse(getFavoriteCountries()) || []);
+let favoriteCountries = new Set(JSON.parse(String(getFavoriteCountries())) || []);
 function debounce(fn, delay) {
     let timer;
     return function (...args) {
         clearTimeout(timer);
-        timer = setTimeout(() => fn.apply(this, args), delay);
+        timer = setTimeout(() => {
+            fn(...args);
+        }, delay);
     };
 }
 function getLanguages(country) {
@@ -71,97 +64,91 @@ function setLoading(isLoading) {
     UI.loading.style.display = isLoading ? "flex" : "none";
 }
 // loads all countries into the webpage
-function loadAllCountries() {
-    return __awaiter(this, void 0, void 0, function* () {
-        setLoading(true);
-        try {
-            const countries = yield getAllCountries();
-            UI.countriesContainer.innerHTML = countries.map(fillTemplate).join("");
-        }
-        catch (error) {
-            console.log(error);
-            UI.countriesContainer.innerHTML = "<p>Failed to load countries</p>";
-        }
-        finally {
-            setLoading(false);
-        }
-    });
-}
-function searchCountry() {
-    return __awaiter(this, void 0, void 0, function* () {
-        const countryName = UI.searchCountries.value.trim();
-        if (countryName === "") {
-            loadAllCountries();
+async function loadAllCountries() {
+    setLoading(true);
+    try {
+        const countries = await getAllCountries();
+        if (typeof countries === "undefined")
             return;
-        }
-        setLoading(true);
-        try {
-            UI.filterByRegion.value = "";
-            UI.countriesContainer.innerHTML = fillTemplate(yield getCountryByName(countryName));
-        }
-        catch (error) {
-            console.log(error);
-        }
-        finally {
-            setLoading(false);
-        }
-    });
+        UI.countriesContainer.innerHTML = countries.map(fillTemplate).join("");
+    }
+    catch (error) {
+        console.log(error);
+        UI.countriesContainer.innerHTML = "<p>Failed to load countries</p>";
+    }
+    finally {
+        setLoading(false);
+    }
 }
-function searchCountryByCode(countryCode) {
-    return __awaiter(this, void 0, void 0, function* () {
-        if (!countryCode)
+async function searchCountry() {
+    const countryName = UI.searchCountries.value.trim();
+    if (countryName === "") {
+        loadAllCountries();
+        return;
+    }
+    setLoading(true);
+    try {
+        UI.filterByRegion.value = "";
+        UI.countriesContainer.innerHTML = fillTemplate(await getCountryByName(countryName));
+    }
+    catch (error) {
+        console.log(error);
+    }
+    finally {
+        setLoading(false);
+    }
+}
+async function searchCountryByCode(countryCode) {
+    if (!countryCode)
+        return;
+    setLoading(true);
+    try {
+        UI.filterByRegion.value = "";
+        UI.countriesContainer.innerHTML = fillTemplate(await getCountryByCode(countryCode));
+    }
+    catch (error) {
+        console.log(error);
+    }
+    finally {
+        setLoading(false);
+    }
+}
+async function filterRegion() {
+    const region = UI.filterByRegion.value;
+    if (region === "") {
+        loadAllCountries();
+        return;
+    }
+    setLoading(true);
+    try {
+        UI.searchCountries.value = "";
+        let results = "";
+        const countries = await getByRegion(region);
+        if (typeof countries === "undefined")
             return;
-        setLoading(true);
-        try {
-            UI.filterByRegion.value = "";
-            UI.countriesContainer.innerHTML = fillTemplate(yield getCountryByCode(countryCode));
-        }
-        catch (error) {
-            console.log(error);
-        }
-        finally {
-            setLoading(false);
-        }
-    });
+        for (let c of countries)
+            results += fillTemplate(c);
+        UI.countriesContainer.innerHTML = results;
+    }
+    catch (error) {
+        console.log(error);
+    }
+    finally {
+        setLoading(false);
+    }
 }
-function filterRegion() {
-    return __awaiter(this, void 0, void 0, function* () {
-        const region = UI.filterByRegion.value;
-        if (region === "") {
-            loadAllCountries();
-            return;
-        }
-        setLoading(true);
-        try {
-            UI.searchCountries.value = "";
-            let results = "";
-            const countries = yield getByRegion(region);
-            for (let c of countries)
-                results += fillTemplate(c);
-            UI.countriesContainer.innerHTML = results;
-        }
-        catch (error) {
-            console.log(error);
-        }
-        finally {
-            setLoading(false);
-        }
-    });
-}
-function showFavoriteCountries() {
-    return __awaiter(this, void 0, void 0, function* () {
-        setLoading(true);
-        try {
-            const countries = yield Promise.all([...favoriteCountries].map((c) => getCountryByName(c)));
-            UI.countriesContainer.innerHTML = countries.map(fillTemplate).join("");
-        }
-        catch (error) {
-            console.log(error);
-        }
-        finally {
-            setLoading(false);
-        }
-    });
+async function showFavoriteCountries() {
+    setLoading(true);
+    try {
+        const countries = await Promise.all([...favoriteCountries].map((c) => getCountryByName(c)));
+        UI.countriesContainer.innerHTML = countries.map(fillTemplate).join("");
+    }
+    catch (error) {
+        console.log(error);
+    }
+    finally {
+        setLoading(false);
+    }
 }
 // Show a temporary message in the bottom-right corner
 function showToast(message) {
@@ -173,19 +160,22 @@ function applyTheme(theme) {
     UI.root.setAttribute("data-theme", theme);
     addToTheme(theme);
     UI.themeToggleBtn.setAttribute("aria-pressed", String(theme === "dark")); // reflect state
-    UI.themeToggleBtn.querySelector("span").textContent =
-        theme === "dark" ? "Light Mode" : "Dark Mode"; // user-friendly label
+    const span = UI.themeToggleBtn.querySelector("span");
+    if (!span)
+        return;
+    span.textContent = theme === "dark" ? "Light Mode" : "Dark Mode"; // user-friendly label
 }
 // Handles adding to or removing from favorite countries
 function handleFavorites(e) {
-    var _a, _b;
-    if (!e.target.matches("input"))
+    const element = e.target;
+    if (!element.matches("input"))
         return;
-    const countryName = (_b = (_a = e.target
-        .closest(".country-card")) === null || _a === void 0 ? void 0 : _a.querySelector("figcaption")) === null || _b === void 0 ? void 0 : _b.textContent;
+    const countryName = element
+        .closest(".country-card")
+        ?.querySelector("figcaption")?.textContent;
     if (!countryName)
         return;
-    if (e.target.checked) {
+    if (element.checked) {
         favoriteCountries.add(countryName);
         addToFavoriteCountries(JSON.stringify(favoriteCountries));
         showToast("✅ Country is added to favorites successfully!");
@@ -198,27 +188,26 @@ function handleFavorites(e) {
     }
 }
 // Handles clicking a country's border
-function clickBorder(e) {
-    return __awaiter(this, void 0, void 0, function* () {
-        if (!e.target.matches(".borders"))
-            return;
-        yield searchCountryByCode(e.target.textContent);
-    });
+async function clickBorder(e) {
+    const element = e.target;
+    if (!element.matches(".borders"))
+        return;
+    await searchCountryByCode(element.textContent);
 }
 function flipTheme() {
     const next = UI.root.getAttribute("data-theme") === "dark" ? "light" : "dark";
     applyTheme(next);
 }
 // Click handler flips theme
-UI.themeToggleBtn.addEventListener("click", flipTheme);
+UI.themeToggleBtn?.addEventListener("click", flipTheme);
 // Initialize UI from current attribute or default to light
 applyTheme(getTheme() || "light");
 await loadAllCountries(); // Initialy load all countries in the webpage
 // Adding events for controls
-UI.searchCountries.addEventListener("input", debounce(searchCountry, 800));
-UI.filterByRegion.addEventListener("change", filterRegion);
-UI.countriesContainer.addEventListener("change", handleFavorites);
-UI.favoritesLink.addEventListener("click", showFavoriteCountries);
-UI.allLink.addEventListener("click", loadAllCountries);
-UI.countriesContainer.addEventListener("click", clickBorder);
+UI.searchCountries?.addEventListener("input", debounce(searchCountry, 800));
+UI.filterByRegion?.addEventListener("change", filterRegion);
+UI.countriesContainer?.addEventListener("change", handleFavorites);
+UI.favoritesLink?.addEventListener("click", showFavoriteCountries);
+UI.allLink?.addEventListener("click", loadAllCountries);
+UI.countriesContainer?.addEventListener("click", clickBorder);
 //# sourceMappingURL=main.js.map
