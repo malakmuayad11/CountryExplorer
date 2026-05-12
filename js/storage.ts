@@ -1,17 +1,18 @@
 "use strict";
+export class Storage {
+  public static addToFavoriteCountries(value: string): void {
+    localStorage.setItem("favoriteCountries", value);
+  }
 
-export function addToFavoriteCountries(value: string): void {
-  localStorage.setItem("favoriteCountries", value);
-}
+  public static addToTheme(value: string): void {
+    localStorage.setItem("theme", value);
+  }
 
-export function addToTheme(value: string): void {
-  localStorage.setItem("theme", value);
-}
+  public static getTheme(): string | null {
+    return localStorage.getItem("theme");
+  }
 
-export function getTheme(): string | null {
-  return localStorage.getItem("theme");
-}
-
-export function getFavoriteCountries(): string | null {
-  return localStorage.getItem("favoriteCountries");
+  public static getFavoriteCountries(): string | null {
+    return localStorage.getItem("favoriteCountries");
+  }
 }
