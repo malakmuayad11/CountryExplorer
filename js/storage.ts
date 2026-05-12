@@ -8,10 +8,10 @@ export function addToTheme(value: string): void {
   localStorage.setItem("theme", value);
 }
 
-export function getTheme(): string {
+export function getTheme(): string | null {
   return localStorage.getItem("theme");
 }
 
-export function getFavoriteCountries(): string {
+export function getFavoriteCountries(): string | null {
   return localStorage.getItem("favoriteCountries");
 }
