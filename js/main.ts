@@ -8,12 +8,7 @@ import {
   Country,
 } from "./api.js";
 
-import {
-  addToFavoriteCountries,
-  addToTheme,
-  getFavoriteCountries,
-  getTheme,
-} from "./storage.js";
+import { Storage } from "./storage.js";
 
 const UI = {
   countriesContainer: document.getElementById(
@@ -32,7 +27,7 @@ const UI = {
 };
 
 let favoriteCountries = new Set<string>(
-  JSON.parse(String(getFavoriteCountries())) || [],
+  JSON.parse(String(Storage.getFavoriteCountries())) || [],
 );
 
 function debounce<T extends (...args: any[]) => void>(
@@ -190,7 +185,7 @@ function showToast(message: string): void {
 
 function applyTheme(theme: string): void {
   UI.root.setAttribute("data-theme", theme);
-  addToTheme(theme);
+  Storage.addToTheme(theme);
   UI.themeToggleBtn.setAttribute("aria-pressed", String(theme === "dark")); // reflect state
 
   const span: HTMLSpanElement | null = UI.themeToggleBtn.querySelector("span");
@@ -211,12 +206,12 @@ function handleFavorites(e: Event): void {
 
   if (element.checked) {
     favoriteCountries.add(countryName);
-    addToFavoriteCountries(JSON.stringify(favoriteCountries));
+    Storage.addToFavoriteCountries(JSON.stringify(favoriteCountries));
     showToast("✅ Country is added to favorites successfully!");
   } else {
     // The checkbox is unchecked, so we remove the country from favorits
     favoriteCountries.delete(countryName);
-    addToFavoriteCountries(JSON.stringify([...favoriteCountries]));
+    Storage.addToFavoriteCountries(JSON.stringify([...favoriteCountries]));
     showToast("✅ Country is removed from favorites.");
   }
 }
@@ -238,14 +233,14 @@ function flipTheme(): void {
 UI.themeToggleBtn?.addEventListener("click", flipTheme);
 
 // Initialize UI from current attribute or default to light
-applyTheme(getTheme() || "light");
+applyTheme(Storage.getTheme() || "light");
 
 await loadAllCountries(); // Initialy load all countries in the webpage
 
 // Adding events for controls
-UI.searchCountries?.addEventListener("input", debounce(searchCountry, 800));
-UI.filterByRegion?.addEventListener("change", filterRegion);
-UI.countriesContainer?.addEventListener("change", handleFavorites);
-UI.favoritesLink?.addEventListener("click", showFavoriteCountries);
+UI.searchCountries.addEventListener("input", debounce(searchCountry, 800));
+UI.filterByRegion.addEventListener("change", filterRegion);
+UI.countriesContainer.addEventListener("change", handleFavorites);
+UI.favoritesLink.addEventListener("click", showFavoriteCountries);
 UI.allLink?.addEventListener("click", loadAllCountries);
-UI.countriesContainer?.addEventListener("click", clickBorder);
+UI.countriesContainer.addEventListener("click", clickBorder);
