@@ -14,21 +14,8 @@ export class Country {
     this.languages = [];
     this.borders = [];
   }
-}
 
-export async function getAllCountries(): Promise<Country[]> {
-  const urlAll: URL = new URL("https://restcountries.com/v3.1/all");
-  urlAll.searchParams.set(
-    "fields",
-    "flags,name,region,capital,population,languages,borders",
-  );
-
-  try {
-    const res = await fetch(urlAll);
-    if (!res.ok)
-      throw new Error("HTTP error: " + res.status + " " + res.statusText);
-    const data = await res.json();
-
+  static mapper(data: string[]): Country[] {
     return data.map((c: any): Country => {
       return new Country(
         c.flags.svg,
@@ -40,15 +27,30 @@ export async function getAllCountries(): Promise<Country[]> {
         c.borders,
       );
     });
+  }
+}
+
+export async function getAllCountries(): Promise<Country[]> {
+  const urlAll: URL = new URL("https://restcountries.com/v3.1/all");
+  urlAll.searchParams.set(
+    "fields",
+    "flags,name,region,capital,population,languages,borders",
+  );
+
+  try {
+    const res: Response = await fetch(urlAll);
+    if (!res.ok)
+      throw new Error("HTTP error: " + res.status + " " + res.statusText);
+    const data: string[] = await res.json();
+
+    return Country.mapper(data);
   } catch (error) {
     console.log(error);
     throw error;
   }
 }
 
-export async function getCountryByName(
-  name: string | unknown,
-): Promise<Country> {
+export async function getCountryByName(name: string): Promise<Country> {
   if (!name) throw new Error("Please provide a valid country name");
 
   const urlGet: URL = new URL("https://restcountries.com/v3.1/name");
@@ -59,7 +61,7 @@ export async function getCountryByName(
   );
 
   try {
-    const res = await fetch(urlGet);
+    const res: Response = await fetch(urlGet);
 
     if (!res.ok)
       throw new Error("HTTP error: " + res.status + " " + res.statusText);
@@ -91,21 +93,11 @@ export async function getByRegion(region: string): Promise<Country[]> {
   );
 
   try {
-    const res = await fetch(urlGetByRegion);
+    const res: Response = await fetch(urlGetByRegion);
     if (!res.ok)
       throw new Error("HTTP error: " + res.status + " " + res.statusText);
-    const data = await res.json();
-    return data.map((c: any): Country => {
-      return new Country(
-        c.flags.svg,
-        c.name.common,
-        c.region,
-        c.capital,
-        c.population,
-        c.languages,
-        c.borders,
-      );
-    });
+    const data: string[] = await res.json();
+    return Country.mapper(data);
   } catch (error) {
     console.log(error);
     throw error;
@@ -123,7 +115,7 @@ export async function getCountryByCode(code: string): Promise<Country> {
   );
 
   try {
-    const res = await fetch(urlGet);
+    const res: Response = await fetch(urlGet);
 
     if (!res.ok)
       throw new Error("HTTP error: " + res.status + " " + res.statusText);
