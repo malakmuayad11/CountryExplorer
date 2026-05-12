@@ -1,6 +1,6 @@
 "use strict";
 
-class Country {
+export class Country {
   constructor(
     public flag: string,
     public name: string,
@@ -46,8 +46,8 @@ export async function getAllCountries(): Promise<Country[] | undefined> {
 }
 
 export async function getCountryByName(
-  name: string,
-): Promise<Country | undefined> {
+  name: string | unknown,
+): Promise<Country> {
   if (!name) throw new Error("Please provide a valid country name");
 
   const urlGet: URL = new URL("https://restcountries.com/v3.1/name");
@@ -73,23 +73,15 @@ export async function getCountryByName(
       data[0].languages,
       data[0].borders,
     );
-    // return {
-    //   flag: data[0].flags.svg,
-    //   name: data[0].name.common,
-    //   region: data[0].region,
-    //   capital: data[0].capital,
-    //   population: data[0].population,
-    //   languages: data[0].languages,
-    //   borders: data[0].borders,
-    // };
   } catch (error) {
     console.log(error);
+    throw error;
   }
 }
 
 export async function getByRegion(
   region: string,
-): Promise<Country | undefined> {
+): Promise<Country[] | undefined> {
   if (!region) throw new Error("Please provide a valid region name");
 
   const urlGetByRegion: URL = new URL("https://restcountries.com/v3.1/region");
@@ -120,9 +112,7 @@ export async function getByRegion(
   }
 }
 
-export async function getCountryByCode(
-  code: string,
-): Promise<Country | undefined> {
+export async function getCountryByCode(code: string): Promise<Country> {
   if (!code) throw new Error("Please provide a valid country code");
 
   const urlGet: URL = new URL("https://restcountries.com/v3.1/alpha");
@@ -150,5 +140,6 @@ export async function getCountryByCode(
     );
   } catch (error) {
     console.log(error);
+    throw error;
   }
 }
