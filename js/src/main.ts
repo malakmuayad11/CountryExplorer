@@ -26,9 +26,15 @@ const UI = {
   themeToggleBtn: document.getElementById("themeToggle") as HTMLButtonElement,
 };
 
-let favoriteCountries = new Set<string>(
-  JSON.parse(String(Storage.getFavoriteCountries())) || [],
-);
+let favoriteCountries: Set<string>;
+
+try {
+  favoriteCountries = new Set<string>(
+    JSON.parse(Storage.getFavoriteCountries() || "[]"),
+  );
+} catch {
+  favoriteCountries = new Set<string>();
+}
 
 function debounce<T extends (...args: any[]) => void>(
   fn: T,

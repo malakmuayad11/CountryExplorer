@@ -1,6 +1,6 @@
 "use strict";
 import { getAllCountries, getCountryByName, getByRegion, getCountryByCode, } from "./api.js";
-import { addToFavoriteCountries, addToTheme, getFavoriteCountries, getTheme, } from "./storage.js";
+import { Storage } from "./storage.js";
 const UI = {
     countriesContainer: document.getElementById("countries-container"),
     searchCountries: document.getElementById("searchCountry"),
@@ -12,7 +12,13 @@ const UI = {
     root: document.documentElement,
     themeToggleBtn: document.getElementById("themeToggle"),
 };
-let favoriteCountries = new Set(JSON.parse(String(getFavoriteCountries())) || []);
+let favoriteCountries;
+try {
+    favoriteCountries = new Set(JSON.parse(Storage.getFavoriteCountries() || "[]"));
+}
+catch {
+    favoriteCountries = new Set();
+}
 function debounce(fn, delay) {
     let timer;
     return function (...args) {
@@ -158,7 +164,7 @@ function showToast(message) {
 }
 function applyTheme(theme) {
     UI.root.setAttribute("data-theme", theme);
-    addToTheme(theme);
+    Storage.addToTheme(theme);
     UI.themeToggleBtn.setAttribute("aria-pressed", String(theme === "dark")); // reflect state
     const span = UI.themeToggleBtn.querySelector("span");
     if (!span)
@@ -177,13 +183,13 @@ function handleFavorites(e) {
         return;
     if (element.checked) {
         favoriteCountries.add(countryName);
-        addToFavoriteCountries(JSON.stringify(favoriteCountries));
+        Storage.addToFavoriteCountries(JSON.stringify(favoriteCountries));
         showToast("✅ Country is added to favorites successfully!");
     }
     else {
         // The checkbox is unchecked, so we remove the country from favorits
         favoriteCountries.delete(countryName);
-        addToFavoriteCountries(JSON.stringify([...favoriteCountries]));
+        Storage.addToFavoriteCountries(JSON.stringify([...favoriteCountries]));
         showToast("✅ Country is removed from favorites.");
     }
 }
@@ -201,13 +207,13 @@ function flipTheme() {
 // Click handler flips theme
 UI.themeToggleBtn?.addEventListener("click", flipTheme);
 // Initialize UI from current attribute or default to light
-applyTheme(getTheme() || "light");
+applyTheme(Storage.getTheme() || "light");
 await loadAllCountries(); // Initialy load all countries in the webpage
 // Adding events for controls
-UI.searchCountries?.addEventListener("input", debounce(searchCountry, 800));
-UI.filterByRegion?.addEventListener("change", filterRegion);
-UI.countriesContainer?.addEventListener("change", handleFavorites);
-UI.favoritesLink?.addEventListener("click", showFavoriteCountries);
+UI.searchCountries.addEventListener("input", debounce(searchCountry, 800));
+UI.filterByRegion.addEventListener("change", filterRegion);
+UI.countriesContainer.addEventListener("change", handleFavorites);
+UI.favoritesLink.addEventListener("click", showFavoriteCountries);
 UI.allLink?.addEventListener("click", loadAllCountries);
-UI.countriesContainer?.addEventListener("click", clickBorder);
+UI.countriesContainer.addEventListener("click", clickBorder);
 //# sourceMappingURL=main.js.map

@@ -1,5 +1,7 @@
-export declare function addToFavoriteCountries(value: string): void;
-export declare function addToTheme(value: string): void;
-export declare function getTheme(): string | null;
-export declare function getFavoriteCountries(): string | null;
+export declare class Storage {
+    static addToFavoriteCountries(value: string): void;
+    static addToTheme(value: string): void;
+    static getTheme(): string | null;
+    static getFavoriteCountries(): string | null;
+}
 //# sourceMappingURL=storage.d.ts.map

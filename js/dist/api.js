@@ -8,9 +8,14 @@ export class Country {
         this.population = population;
         this.languages = languages;
         this.borders = borders;
-        capital = [];
-        languages = [];
-        borders = [];
+        this.capital = [];
+        this.languages = [];
+        this.borders = [];
+    }
+    static mapper(data) {
+        return data.map((c) => {
+            return new Country(c.flags.svg, c.name.common, c.region, c.capital, c.population, c.languages, c.borders);
+        });
     }
 }
 export async function getAllCountries() {
@@ -21,12 +26,11 @@ export async function getAllCountries() {
         if (!res.ok)
             throw new Error("HTTP error: " + res.status + " " + res.statusText);
         const data = await res.json();
-        return data.map((c) => {
-            return new Country(c.flags.svg, c.name.common, c.region, c.capital, c.population, c.languages, c.borders);
-        });
+        return Country.mapper(data);
     }
     catch (error) {
         console.log(error);
+        throw error;
     }
 }
 export async function getCountryByName(name) {
@@ -58,12 +62,11 @@ export async function getByRegion(region) {
         if (!res.ok)
             throw new Error("HTTP error: " + res.status + " " + res.statusText);
         const data = await res.json();
-        return data.map((c) => {
-            return new Country(c.flags.svg, c.name.common, c.region, c.capital, c.population, c.languages, c.borders);
-        });
+        return Country.mapper(data);
     }
     catch (error) {
         console.log(error);
+        throw error;
     }
 }
 export async function getCountryByCode(code) {
