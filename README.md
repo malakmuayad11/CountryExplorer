@@ -18,7 +18,16 @@ A Front-end web application built with HTML, CSS, JavaScript, and TypeScript. Th
 - Local Storage
 - REST Countries API
 
-## 🚀 How to Run
+## 🚀 Deployment
+The project is live and accessible here:
+
+🔗 **Live Demo:**  
+[Country Explorer](https://malakmuayad11.github.io/CountryExplorer/)
+
+### Deployment Platform
+- GitHub Pages
+
+## 🚀 How to Run Locally
 1. Clone the repository:
    ```bash
    git clone https://github.com/malakmuayad11/CountryExplorer.git
