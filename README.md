@@ -1,6 +1,8 @@
 # 🗺️ Country Explorer (Vanilla JavaScript + TypeScript)
 A Front-end web application built with HTML, CSS, JavaScript, and TypeScript. The application displays countries from all around the world, enables searching for a country, filters countries by region, and saves countries to favorites.
 
+> ‼️Note: The used REST Countries API version (v4) is now deprecated. Therefore, countries won't be loaded on the main page. Migration to the newest version (v5) will be done within a few days, and countries will be displayed again.
+
 ## ✅ Features
 - 🛜 Fetches and displays countries from the Rest Countries API.
 - ℹ️ Displays detailed information for each country.
