@@ -1,0 +1,25 @@
+{
+  "name": "countryexplorer",
+  "version": "1.0.0",
+  "description": "A Front-end web application built with HTML, CSS, JavaScript, and TypeScript. The application displays countries from all around the world, enables searching for a country, filters countries by region, and saves countries to favorites.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/malakmuayad11/CountryExplorer.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/malakmuayad11/CountryExplorer/issues"
+  },
+  "homepage": "https://github.com/malakmuayad11/CountryExplorer#readme",
+  "dependencies": {
+    "@tailwindcss/cli": "^4.3.1",
+    "tailwindcss": "^4.3.1"
+  }
+}
