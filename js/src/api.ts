@@ -71,31 +71,41 @@ export async function getAllCountries(): Promise<Country[]> {
 export async function getCountryByName(name: string): Promise<Country> {
   if (!name) throw new Error("Please provide a valid country name");
 
-  const urlGet: URL = new URL("https://restcountries.com/v3.1/name");
-  urlGet.pathname += `/${name}`;
+  // Using encodeURIComponent protects against spaces in country names (e.g. "United States")
+  const urlGet: URL = new URL(
+    `https://api.restcountries.com/countries/v5/names.common/${encodeURIComponent(name)}`,
+  );
+
+  urlGet.searchParams.set("pretty", "1");
   urlGet.searchParams.set(
-    "fields",
-    "flags,name,region,capital,population,languages,borders",
+    "response_fields",
+    "flag,names,region,capitals,population,languages,borders",
   );
 
   try {
-    const res: Response = await fetch(urlGet);
+    const res: Response = await fetch(urlGet, {
+      headers: {
+        Authorization: "Bearer rc_live_f80292cbebea4442a93e3de9ee16a185",
+      },
+    });
 
     if (!res.ok)
       throw new Error("HTTP error: " + res.status + " " + res.statusText);
 
-    const data = await res.json();
-    return new Country(
-      data[0].flags.svg,
-      data[0].name.common,
-      data[0].region,
-      data[0].capital,
-      data[0].population,
-      data[0].languages,
-      data[0].borders,
-    );
+    const payload = await res.json();
+
+    // 1. Map the payload using your existing array mapper
+    const mappedCountries = Country.mapper(payload);
+
+    // 2. Fallback check: if nothing matched, throw an error
+    if (mappedCountries.length === 0) {
+      throw new Error("No country found matching that name");
+    }
+
+    // 3. Return the single country object out of the array
+    return mappedCountries[0]!;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 }

@@ -26,6 +26,21 @@ export class Country {
             return new Country(c.flag?.url_svg || "", c.names?.common || "", c.region || "", capitalArray, c.population || 0, languageArray, c.borders || []);
         });
     }
+    static mapperToOne(apiPayload) {
+        // 1. The API wraps the array of countries inside apiPayload.data.objects
+        const element = apiPayload?.data?.objects;
+        return element.map((c) => {
+            // 2. Map capitals array of objects safely to string[]
+            const capitalArray = Array.isArray(c.capitals)
+                ? c.capitals.map((cap) => cap.name || "")
+                : [];
+            // 3. Map languages array of objects safely to string[]
+            const languageArray = Array.isArray(c.languages)
+                ? c.languages.map((lang) => lang.name || lang.English || "")
+                : [];
+            return new Country(c.flag?.url_svg || "", c.names?.common || "", c.region || "", capitalArray, c.population || 0, languageArray, c.borders || []);
+        });
+    }
 }
 export async function getAllCountries() {
     const urlAll = new URL("https://api.restcountries.com/countries/v5");
@@ -51,18 +66,30 @@ export async function getAllCountries() {
 export async function getCountryByName(name) {
     if (!name)
         throw new Error("Please provide a valid country name");
-    const urlGet = new URL("https://restcountries.com/v3.1/name");
-    urlGet.pathname += `/${name}`;
-    urlGet.searchParams.set("fields", "flags,name,region,capital,population,languages,borders");
+    // Using encodeURIComponent protects against spaces in country names (e.g. "United States")
+    const urlGet = new URL(`https://api.restcountries.com/countries/v5/names.common/${encodeURIComponent(name)}`);
+    urlGet.searchParams.set("pretty", "1");
+    urlGet.searchParams.set("response_fields", "flag,names,region,capitals,population,languages,borders");
     try {
-        const res = await fetch(urlGet);
+        const res = await fetch(urlGet, {
+            headers: {
+                Authorization: "Bearer rc_live_f80292cbebea4442a93e3de9ee16a185",
+            },
+        });
         if (!res.ok)
             throw new Error("HTTP error: " + res.status + " " + res.statusText);
-        const data = await res.json();
-        return new Country(data[0].flags.svg, data[0].name.common, data[0].region, data[0].capital, data[0].population, data[0].languages, data[0].borders);
+        const payload = await res.json();
+        // 1. Map the payload using your existing array mapper
+        const mappedCountries = Country.mapper(payload);
+        // 2. Fallback check: if nothing matched, throw an error
+        if (mappedCountries.length === 0) {
+            throw new Error("No country found matching that name");
+        }
+        // 3. Return the single country object out of the array
+        return mappedCountries[0];
     }
     catch (error) {
-        console.log(error);
+        console.error(error);
         throw error;
     }
 }

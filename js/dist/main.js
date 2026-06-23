@@ -28,11 +28,14 @@ function debounce(fn, delay) {
         }, delay);
     };
 }
+// function getLanguages(country: Country): string {
+//   let results: string = "";
+//   for (const [k, v] of Object.entries(country.languages)) results += v + ", ";
+//   return results.slice(0, -2);
+// }
 function getLanguages(country) {
-    let results = "";
-    for (const [k, v] of Object.entries(country.languages))
-        results += v + ", ";
-    return results.slice(0, -2);
+    // Use optional chaining (?.) and a fallback empty array to be completely error-proof
+    return (country.languages || []).join(", ");
 }
 function getBorders(country) {
     if (country.borders.length === 0)

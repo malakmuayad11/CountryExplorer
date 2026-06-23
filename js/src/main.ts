@@ -50,11 +50,16 @@ function debounce<T extends (...args: any[]) => void>(
   };
 }
 
-function getLanguages(country: Country): string {
-  let results: string = "";
+// function getLanguages(country: Country): string {
+//   let results: string = "";
 
-  for (const [k, v] of Object.entries(country.languages)) results += v + ", ";
-  return results.slice(0, -2);
+//   for (const [k, v] of Object.entries(country.languages)) results += v + ", ";
+//   return results.slice(0, -2);
+// }
+
+function getLanguages(country: Country): string {
+  // Use optional chaining (?.) and a fallback empty array to be completely error-proof
+  return (country.languages || []).join(", ");
 }
 
 function getBorders(country: Country): string {

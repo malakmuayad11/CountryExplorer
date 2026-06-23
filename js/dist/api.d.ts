@@ -8,6 +8,7 @@ export declare class Country {
     borders: string[];
     constructor(flag: string, name: string, region: string, capital: string[], population: number, languages: string[], borders: string[]);
     static mapper(apiPayload: any): Country[];
+    static mapperToOne(apiPayload: any): Country;
 }
 export declare function getAllCountries(): Promise<Country[]>;
 export declare function getCountryByName(name: string): Promise<Country>;
