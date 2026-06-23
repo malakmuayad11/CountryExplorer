@@ -26,21 +26,6 @@ export class Country {
             return new Country(c.flag?.url_svg || "", c.names?.common || "", c.region || "", capitalArray, c.population || 0, languageArray, c.borders || []);
         });
     }
-    static mapperToOne(apiPayload) {
-        // 1. The API wraps the array of countries inside apiPayload.data.objects
-        const element = apiPayload?.data?.objects;
-        return element.map((c) => {
-            // 2. Map capitals array of objects safely to string[]
-            const capitalArray = Array.isArray(c.capitals)
-                ? c.capitals.map((cap) => cap.name || "")
-                : [];
-            // 3. Map languages array of objects safely to string[]
-            const languageArray = Array.isArray(c.languages)
-                ? c.languages.map((lang) => lang.name || lang.English || "")
-                : [];
-            return new Country(c.flag?.url_svg || "", c.names?.common || "", c.region || "", capitalArray, c.population || 0, languageArray, c.borders || []);
-        });
-    }
 }
 export async function getAllCountries() {
     const urlAll = new URL("https://api.restcountries.com/countries/v5");
@@ -96,11 +81,15 @@ export async function getCountryByName(name) {
 export async function getByRegion(region) {
     if (!region)
         throw new Error("Please provide a valid region name");
-    const urlGetByRegion = new URL("https://restcountries.com/v3.1/region");
-    urlGetByRegion.pathname += `/${region}`;
+    const urlGetByRegion = new URL("https://api.restcountries.com/countries/v5");
+    urlGetByRegion.searchParams.set("region", region);
     urlGetByRegion.searchParams.set("fields", "flags,name,region,capital,population,languages,borders");
     try {
-        const res = await fetch(urlGetByRegion);
+        const res = await fetch(urlGetByRegion, {
+            headers: {
+                Authorization: "Bearer rc_live_f80292cbebea4442a93e3de9ee16a185",
+            },
+        });
         if (!res.ok)
             throw new Error("HTTP error: " + res.status + " " + res.statusText);
         const data = await res.json();

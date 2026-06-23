@@ -113,15 +113,21 @@ export async function getCountryByName(name: string): Promise<Country> {
 export async function getByRegion(region: string): Promise<Country[]> {
   if (!region) throw new Error("Please provide a valid region name");
 
-  const urlGetByRegion: URL = new URL("https://restcountries.com/v3.1/region");
-  urlGetByRegion.pathname += `/${region}`;
+  const urlGetByRegion: URL = new URL(
+    "https://api.restcountries.com/countries/v5",
+  );
+  urlGetByRegion.searchParams.set("region", region);
   urlGetByRegion.searchParams.set(
     "fields",
     "flags,name,region,capital,population,languages,borders",
   );
 
   try {
-    const res: Response = await fetch(urlGetByRegion);
+    const res: Response = await fetch(urlGetByRegion, {
+      headers: {
+        Authorization: "Bearer rc_live_f80292cbebea4442a93e3de9ee16a185",
+      },
+    });
     if (!res.ok)
       throw new Error("HTTP error: " + res.status + " " + res.statusText);
     const data: string[] = await res.json();
