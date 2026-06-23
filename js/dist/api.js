@@ -8,28 +8,43 @@ export class Country {
         this.population = population;
         this.languages = languages;
         this.borders = borders;
-        this.capital = [];
-        this.languages = [];
-        this.borders = [];
     }
-    static mapper(data) {
-        return data.map((c) => {
-            return new Country(c.flags.svg, c.name.common, c.region, c.capital, c.population, c.languages, c.borders);
+    static mapper(apiPayload) {
+        // 1. The API wraps the array of countries inside apiPayload.data.objects
+        const elements = apiPayload?.data?.objects;
+        if (!Array.isArray(elements))
+            return [];
+        return elements.map((c) => {
+            // 2. Map capitals array of objects safely to string[]
+            const capitalArray = Array.isArray(c.capitals)
+                ? c.capitals.map((cap) => cap.name || "")
+                : [];
+            // 3. Map languages array of objects safely to string[]
+            const languageArray = Array.isArray(c.languages)
+                ? c.languages.map((lang) => lang.name || lang.English || "")
+                : [];
+            return new Country(c.flag?.url_svg || "", c.names?.common || "", c.region || "", capitalArray, c.population || 0, languageArray, c.borders || []);
         });
     }
 }
 export async function getAllCountries() {
-    const urlAll = new URL("https://restcountries.com/v3.1/all");
-    urlAll.searchParams.set("fields", "flags,name,region,capital,population,languages,borders");
+    const urlAll = new URL("https://api.restcountries.com/countries/v5");
+    urlAll.searchParams.set("response_fields", "flag,names,region,capitals,population,languages,borders");
+    urlAll.searchParams.set("limit", "100");
     try {
-        const res = await fetch(urlAll);
+        const res = await fetch(urlAll, {
+            headers: {
+                Authorization: "Bearer rc_live_f80292cbebea4442a93e3de9ee16a185",
+            },
+        });
         if (!res.ok)
             throw new Error("HTTP error: " + res.status + " " + res.statusText);
-        const data = await res.json();
-        return Country.mapper(data);
+        // The top-level response is an Object payload containing metadata + data object
+        const payload = await res.json();
+        return Country.mapper(payload);
     }
     catch (error) {
-        console.log(error);
+        console.error(error);
         throw error;
     }
 }

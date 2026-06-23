@@ -9,43 +9,61 @@ export class Country {
     public population: number,
     public languages: string[],
     public borders: string[],
-  ) {
-    this.capital = [];
-    this.languages = [];
-    this.borders = [];
-  }
+  ) {}
 
-  static mapper(data: string[]): Country[] {
-    return data.map((c: any): Country => {
+  static mapper(apiPayload: any): Country[] {
+    // 1. The API wraps the array of countries inside apiPayload.data.objects
+    const elements = apiPayload?.data?.objects;
+    if (!Array.isArray(elements)) return [];
+
+    return elements.map((c: any): Country => {
+      // 2. Map capitals array of objects safely to string[]
+      const capitalArray: string[] = Array.isArray(c.capitals)
+        ? c.capitals.map((cap: any) => cap.name || "")
+        : [];
+
+      // 3. Map languages array of objects safely to string[]
+      const languageArray: string[] = Array.isArray(c.languages)
+        ? c.languages.map((lang: any) => lang.name || lang.English || "")
+        : [];
+
       return new Country(
-        c.flags.svg,
-        c.name.common,
-        c.region,
-        c.capital,
-        c.population,
-        c.languages,
-        c.borders,
+        c.flag?.url_svg || "",
+        c.names?.common || "",
+        c.region || "",
+        capitalArray,
+        c.population || 0,
+        languageArray,
+        c.borders || [],
       );
     });
   }
 }
 
 export async function getAllCountries(): Promise<Country[]> {
-  const urlAll: URL = new URL("https://restcountries.com/v3.1/all");
+  const urlAll: URL = new URL("https://api.restcountries.com/countries/v5");
+
   urlAll.searchParams.set(
-    "fields",
-    "flags,name,region,capital,population,languages,borders",
+    "response_fields",
+    "flag,names,region,capitals,population,languages,borders",
   );
 
+  urlAll.searchParams.set("limit", "100");
+
   try {
-    const res: Response = await fetch(urlAll);
+    const res: Response = await fetch(urlAll, {
+      headers: {
+        Authorization: "Bearer rc_live_f80292cbebea4442a93e3de9ee16a185",
+      },
+    });
     if (!res.ok)
       throw new Error("HTTP error: " + res.status + " " + res.statusText);
-    const data: string[] = await res.json();
 
-    return Country.mapper(data);
+    // The top-level response is an Object payload containing metadata + data object
+    const payload: any = await res.json();
+    return Country.mapper(payload);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 }
