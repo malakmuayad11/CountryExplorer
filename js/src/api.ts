@@ -141,29 +141,26 @@ export async function getByRegion(region: string): Promise<Country[]> {
 export async function getCountryByCode(code: string): Promise<Country> {
   if (!code) throw new Error("Please provide a valid country code");
 
-  const urlGet: URL = new URL("https://restcountries.com/v3.1/alpha");
-  urlGet.pathname += `/${code}`;
+  const urlGet: URL = new URL(
+    `https://api.restcountries.com/countries/v5/codes.alpha_3/${code}`,
+  );
   urlGet.searchParams.set(
     "fields",
     "flags,name,region,capital,population,languages,borders",
   );
 
   try {
-    const res: Response = await fetch(urlGet);
+    const res: Response = await fetch(urlGet, {
+      headers: {
+        Authorization: "Bearer rc_live_f80292cbebea4442a93e3de9ee16a185",
+      },
+    });
 
     if (!res.ok)
       throw new Error("HTTP error: " + res.status + " " + res.statusText);
 
-    const data = await res.json();
-    return new Country(
-      data.flags.svg,
-      data.name.common,
-      data.region,
-      data.capital,
-      data.population,
-      data.languages,
-      data.borders,
-    );
+    const payload = await res.json();
+    return Country.mapper(payload)[0]!;
   } catch (error) {
     console.log(error);
     throw error;
