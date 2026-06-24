@@ -32,20 +32,23 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="css/style.css" />
+    <!-- <link rel="stylesheet" href="css/style.css" /> -->
+    <link rel="stylesheet" href="./dist/output.css" />
   </head>
-  <body>
+  <body class="box-border font-sans">
     <div id="app">
-      <header>
-        <h1>Country Explorer</h1>
+      <header
+        class="mb-2 sticky top-0 z-1000 bg-accent text-line flex flex-col"
+      >
+        <h1 class="center mb-1">Country Explorer</h1>
         <button
           id="themeToggle"
-          class="theme-toggle"
+          class="theme-toggle absolute top-20 right-3.5 inline-flex items-center gap-2 py-1.5] px-3 rounded-full border border-line bg-inherit text-line cursor-pointer text-[14px] outline-0 transition-all duration-200 ease-in hover:shodow-default hover:-translate-y"
           type="button"
           aria-pressed="false"
           aria-label="Toggle dark or light theme"
         >
-          <svg viewBox="0 0 24 24" aria-hidden="true">
+          <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" aria-hidden="true">
             <path
               fill="currentColor"
               d="M12 4a1 1 0 0 1 1 1V7a1 1 0 0 1-2 0V5a1 1 0 0 1 1-1Zm0 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm8-5a1 1 0 0 1 1 1h2a1 1 0 0 1 0 2h-2a1 1 0 0 1-1-1 1 1 0 0 1 1-1ZM3 12a1 1 0 0 1-1 1H0a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1Zm15.66 6.66a1 1 0 0 1 1.41 0l1.42 1.42a1 1 0 0 1-1.42 1.41l-1.41-1.41a1 1 0 0 1 0-1.42ZM4.93 4.93a1 1 0 0 1 1.41 0L7.76 6.34A1 1 0 0 1 6.34 7.76L4.93 6.34a1 1 0 0 1 0-1.41Zm0 14.14a1 1 0 0 1 1.41 0l1.41 1.41A1 1 0 0 1 6.34 22.9l-1.41-1.41a1 1 0 0 1 0-1.41ZM19.07 4.93a1 1 0 0 1 1.41 0 1 1 0 0 1 0 1.41l-1.41 1.41A1 1 0 0 1 17.66 6.34l1.41-1.41Z"
@@ -53,21 +56,38 @@
           </svg>
           <span>Toggle Theme</span>
         </button>
-        <nav>
-          <ul>
-            <li><a id="all-link">All Countries</a></li>
-            <li><a id="favorites-link">Favorites</a></li>
+        <nav class="p-3">
+          <ul class="flex justify-start gap-2 p-0">
+            <li>
+              <a
+                class="hover:cursor-pointer hover:underline hover:-translate-y-px inline-block ease-in transition-all duration-200"
+                id="all-link"
+                >All Countries</a
+              >
+            </li>
+            <li>
+              <a
+                class="inline-block ease-in transition-all duration-200 hover:cursor-pointer hover:underline hover:-translate-y-px"
+                id="favorites-link"
+                >Favorites</a
+              >
+            </li>
           </ul>
         </nav>
       </header>
-      <div id="row">
+      <div id="row" class="flex justify-around border-b border-b-muted">
         <input
           type="search"
+          class="bg-bg text-text w-[45%] p-[0.35rem] m-3 rounded-2xl border border-muted"
           name="searchCountry"
           id="searchCountry"
           placeholder="Search for a country..."
         />
-        <select name="filterByRegion" id="filterByRegion">
+        <select
+          class="appearance-none bg-bg text-text w-[45%] p-[0.35rem] m-3 rounded-2xl border border-muted"
+          name="filterByRegion"
+          id="filterByRegion"
+        >
           <option value="">Filter by region</option>
           <option value="Africa">Africa</option>
           <option value="Americas">Americas</option>
@@ -82,7 +102,10 @@
         <div class="spinner"></div>
         <div>Loading…</div>
       </div>
-      <div id="countries-container">
+      <div
+        id="countries-container"
+        class="grid grid-cols-[200px_1fr] gap-3 m-3"
+      >
         <!-- Countries will go here -->
       </div>
       <!-- ✅ Toast message container -->

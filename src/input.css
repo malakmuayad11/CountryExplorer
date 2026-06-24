@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", sans-serif;
+
+  --color-bg: #f7f7fb;
+  --color-text: #1f2937;
+  --color-muted: #556072;
+  --color-accent: #2f4a6d;
+  --color-line: #e5e7eb;
+
+  --shadow-default: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #0b1220;
+    --color-text: #e5e7eb;
+    --color-muted: #9ca3af;
+    --color-accent: #1b2a3a;
+    --shadow-default: none;
+  }
+}

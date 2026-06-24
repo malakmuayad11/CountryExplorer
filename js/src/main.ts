@@ -67,7 +67,7 @@ function getBorders(country: Country): string {
 
   let results: string = "";
   country.borders.forEach((b: string) => {
-    results += `<button class="borders">${b}</button>`;
+    results += `<button class="cursor-pointer inline-block w-fit text-[0.65rem] text-center rounded-full border border-muted opacity-90 m-1 hover:opacity-50">${b}</button>`;
   });
   return results;
 }
@@ -79,19 +79,19 @@ function handleCheckedStatus(countryName: string): string {
 // Returns template to fill in the webpage for each country
 function fillTemplate(country: Country): string {
   return `<div class="country-card">
-        <figure><img src="${country.flag}" alt="${country.name}'s Flag" width="150" height="70" loading="lazy">
+        <figure><img src="${country.flag}" alt="${country.name}'s Flag" class="w-37.5 h-17.5" loading="lazy">
         <figcaption>${country.name}</figcaption></figure>
-        <p class="muted"><span class="bolder">Region:</span> ${country.region}</p>
+        <p class="m-0 opacity-90"><span class="font-semibold">Region:</span> ${country.region}</p>
         <div class="favoriteCheckBox">
           <input type="checkbox" name="favorite-check" id="favorite-check" ${handleCheckedStatus(country.name)}>
           <label for="favorite-check">Add to favorites</label>
         </div>
         <details>
           <summary>Click to view details</summary>
-          <p class="muted"><span class="bolder">Capital:</span> ${country.capital}</p>
-          <p class="muted"><span class="bolder">Population:</span> ${country.population}</p>
-          <p class="muted"><span class="bolder">Languages:</span> ${getLanguages(country)}</p>
-          <div class="row-buttons"><span class="bolder">Borders:</span> ${getBorders(country)}</p>
+          <p class="m-0 opacity-90"><span class="font-semibold">Capital:</span> ${country.capital}</p>
+          <p class="m-0 opacity-90"><span class="font-semibold">Population:</span> ${country.population}</p>
+          <p class="m-0 opacity-90"><span class="font-semibold">Languages:</span> ${getLanguages(country)}</p>
+          <div class="row-buttons"><span class="font-semibold">Borders:</span> ${getBorders(country)}</p>
         </details>
       </div>`;
 }
