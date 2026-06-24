@@ -229,7 +229,7 @@ function handleFavorites(e: Event): void {
 
   if (element.checked) {
     favoriteCountries.add(countryName);
-    Storage.addToFavoriteCountries(JSON.stringify(favoriteCountries));
+    Storage.addToFavoriteCountries(JSON.stringify([...favoriteCountries]));
     showToast("✅ Country is added to favorites successfully!");
   } else {
     // The checkbox is unchecked, so we remove the country from favorits

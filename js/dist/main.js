@@ -195,7 +195,7 @@ function handleFavorites(e) {
         return;
     if (element.checked) {
         favoriteCountries.add(countryName);
-        Storage.addToFavoriteCountries(JSON.stringify(favoriteCountries));
+        Storage.addToFavoriteCountries(JSON.stringify([...favoriteCountries]));
         showToast("✅ Country is added to favorites successfully!");
     }
     else {
