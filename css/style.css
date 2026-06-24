@@ -1,4 +1,4 @@
-* {
+/* * {
   box-sizing: border-box;
 }
 
@@ -27,10 +27,10 @@ body {
   --muted: #9ca3af;
   --accent: #1b2a3a;
   --shadow: none; /* Reduce glow on dark surfaces */
-}
+} */
 
 /* ── System Dark (only if user hasn’t manually chosen) ─────────── */
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
     --bg: #0b1220;
     --text: #e5e7eb;
@@ -112,10 +112,10 @@ header ul {
   justify-content: start;
   gap: 0.5rem;
   padding: 0;
-}
+} */
 
 /* Row of search and select inputs */
-#row {
+/* #row {
   display: flex;
   justify-content: space-around;
   border-bottom: 1px solid var(--muted);
@@ -177,15 +177,15 @@ p.muted,
 input#favorite-check,
 .country-card figure {
   margin: 0;
-}
+} */
 
 /* For Chrome, Edge, Safari */
-details summary::-webkit-details-marker {
-  margin-left: 0.5rem; /* adjust to push right */
-}
+/* details summary::-webkit-details-marker {
+  margin-left: 0.5rem; adjust to push right */
+/* } */
 
 /* For Firefox */
-details summary::marker {
+/* details summary::marker {
   margin-left: 0.5rem;
 }
 
@@ -220,10 +220,10 @@ button.borders:hover {
   border: 2px solid var(--muted);
   border-top-color: var(--accent);
   animation: spin 0.85s linear infinite;
-}
+} */
 
 /* Spinner animation */
-@keyframes spin {
+/* @keyframes spin {
   to {
     transform: rotate(360deg);
   }
@@ -248,7 +248,7 @@ footer {
   padding: 0.25rem;
   text-align: center;
   border-top: 1px solid var(--muted);
-}
+} */
 
 @media print {
   header,
