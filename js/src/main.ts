@@ -78,7 +78,7 @@ function handleCheckedStatus(countryName: string): string {
 
 // Returns template to fill in the webpage for each country
 function fillTemplate(country: Country): string {
-  return `<div class="text-text flex flex-col gap-1 border border-muted rounded-2xl p-2 shadow-default transition-transform duration-200 ease-in hover:-translate-y-0.5 bg-bg">
+  return `<div class="country-card text-text flex flex-col gap-1 border border-muted rounded-2xl p-2 shadow-default transition-transform duration-200 ease-in hover:-translate-y-0.5 bg-bg">
         <figure><img 
           class="w-20 h-12 mx-auto object-cover object-center rounded-md border border-muted"
           src="${country.flag}"
@@ -193,10 +193,17 @@ async function showFavoriteCountries(): Promise<void> {
 }
 
 // Show a temporary message in the bottom-right corner
+let toastTimeout: ReturnType<typeof setTimeout>;
 function showToast(message: string): void {
   UI.toast.textContent = message;
-  UI.toast.style.display = "block";
-  setTimeout(() => (UI.toast.style.display = "none"), 2200);
+
+  UI.toast.classList.remove("hidden");
+
+  clearTimeout(toastTimeout);
+
+  toastTimeout = setTimeout(() => {
+    UI.toast.classList.add("hidden");
+  }, 2200);
 }
 
 function applyTheme(theme: string): void {
@@ -246,7 +253,6 @@ function flipTheme(): void {
 }
 
 // Click handler flips theme
-debugger;
 UI.themeToggleBtn?.addEventListener("click", flipTheme);
 
 // Initialize UI from current attribute or default to light
@@ -257,6 +263,7 @@ await loadAllCountries(); // Initialy load all countries in the webpage
 // Adding events for controls
 UI.searchCountries.addEventListener("input", debounce(searchCountry, 800));
 UI.filterByRegion.addEventListener("change", filterRegion);
+debugger;
 UI.countriesContainer.addEventListener("change", handleFavorites);
 UI.favoritesLink.addEventListener("click", showFavoriteCountries);
 UI.allLink?.addEventListener("click", loadAllCountries);
