@@ -51,9 +51,14 @@ function handleCheckedStatus(countryName) {
 }
 // Returns template to fill in the webpage for each country
 function fillTemplate(country) {
-    return `<div class="country-card">
-        <figure><img src="${country.flag}" alt="${country.name}'s Flag" class="w-37.5 h-17.5" loading="lazy">
-        <figcaption>${country.name}</figcaption></figure>
+    return `<div class="text-text flex flex-col gap-1 border border-muted rounded-2xl p-2 shadow-default transition-transform duration-200 ease-in hover:-translate-y-0.5 bg-bg">
+        <figure><img 
+          class="w-20 h-12 mx-auto object-cover object-center rounded-md border border-muted"
+          src="${country.flag}"
+          alt="${country.name}'s Flag"
+          loading="lazy"
+      />
+        <figcaption class="font-semibold text-left mt-2">${country.name}</figcaption></figure>
         <p class="m-0 opacity-90"><span class="font-semibold">Region:</span> ${country.region}</p>
         <div class="favoriteCheckBox">
           <input type="checkbox" name="favorite-check" id="favorite-check" ${handleCheckedStatus(country.name)}>
@@ -208,6 +213,7 @@ function flipTheme() {
     applyTheme(next);
 }
 // Click handler flips theme
+debugger;
 UI.themeToggleBtn?.addEventListener("click", flipTheme);
 // Initialize UI from current attribute or default to light
 applyTheme(Storage.getTheme() || "light");
