@@ -100,11 +100,15 @@
         </select>
       </div>
       <!-- ✅ Loading area (hidden by default) -->
-      <div class="opacity-90" id="loading" style="display: none">
+      <div
+        class="opacity-90 flex gap-0.5 m-1"
+        id="loading"
+        style="display: none"
+      >
         <div
-          class="spinner w-4 h-4 rounded-full border-2 border-muted border-t-accent animate-spin"
+          class="spinner mt-1.5 w-4 h-4 rounded-full border-2 border-muted border-t-accent animate-spin"
         ></div>
-        <div>Loading…</div>
+        <div class="text-text ml-0.5">Loading…</div>
       </div>
       <div
         id="countries-container"

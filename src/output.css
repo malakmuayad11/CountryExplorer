@@ -245,6 +245,12 @@
   .mx-auto {
     margin-inline: auto;
   }
+  .mt-1 {
+    margin-top: var(--spacing);
+  }
+  .mt-1\.5 {
+    margin-top: calc(var(--spacing) * 1.5);
+  }
   .mt-2 {
     margin-top: calc(var(--spacing) * 2);
   }
@@ -254,8 +260,11 @@
   .mb-2 {
     margin-bottom: calc(var(--spacing) * 2);
   }
-  .ml-2 {
-    margin-left: calc(var(--spacing) * 2);
+  .ml-0 {
+    margin-left: 0;
+  }
+  .ml-0\.5 {
+    margin-left: calc(var(--spacing) * 0.5);
   }
   .box-border {
     box-sizing: border-box;
@@ -343,6 +352,12 @@
   }
   .justify-start {
     justify-content: flex-start;
+  }
+  .gap-0 {
+    gap: 0;
+  }
+  .gap-0\.5 {
+    gap: calc(var(--spacing) * 0.5);
   }
   .gap-1 {
     gap: var(--spacing);
