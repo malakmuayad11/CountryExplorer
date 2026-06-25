@@ -23,6 +23,8 @@ A responsive country information front-end application that allows users to brow
 - Local Storage
 - REST Countries API (v5)
 
+> Note: This is a frontend-only portfolio project. API keys cannot be fully secured in browser applications. In a production application, I would use a backend or serverless function to keep secrets private.
+
 ## 🚀 Deployment
 
 The project is live and accessible here:
@@ -64,8 +66,6 @@ The project is live and accessible here:
 ### ⭐ Favorites
 
 ![Favorites](./screenshots/favorites.png)
-
-> Note: This is a frontend-only portfolio project. API keys cannot be fully secured in browser applications. In a production application, I would use a backend or serverless function to keep secrets private.
 
 ## 👩‍💻 Author
 
