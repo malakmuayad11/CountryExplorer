@@ -65,6 +65,8 @@ The project is live and accessible here:
 
 ![Favorites](./screenshots/favorites.png)
 
+> Note: This is a frontend-only portfolio project. API keys cannot be fully secured in browser applications. In a production application, I would use a backend or serverless function to keep secrets private.
+
 ## 👩‍💻 Author
 
 **Malak Muayad**  
