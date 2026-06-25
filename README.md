@@ -1,10 +1,11 @@
 # 🗺️ Country Explorer (Vanilla JavaScript + TypeScript)
-A Front-end web application built with HTML, CSS, JavaScript, and TypeScript. The application displays countries from all around the world, enables searching for a country, filters countries by region, and saves countries to favorites.
 
-> ‼️Note: The used REST Countries API version (v4) is now deprecated. Therefore, countries won't be loaded on the main page. Migration to the newest version (v5) will be done within a few days, and countries will be displayed again.
+A responsive country information front-end application that allows users to browse, search, filter, and save favorite countries. Built using Vanilla JavaScript, TypeScript, and Tailwind CSS while consuming data from the REST Countries API.
 
 ## ✅ Features
-- 🛜 Fetches and displays countries from the Rest Countries API.
+
+- 🛜 Fetches and displays country data from the REST Countries API.
+- 📄 Paginated country listing on the main screen.
 - ℹ️ Displays detailed information for each country.
 - 🔍 Search for countries by name.
 - 🌍 Filter countries by region.
@@ -13,47 +14,59 @@ A Front-end web application built with HTML, CSS, JavaScript, and TypeScript. Th
 - 📱 Responsive design techniques, to adapt to different screen sizes.
 
 ## ⚙️ Technologies:
+
 - HTML5
 - CSS3
+- Tailwind CSS (v4)
 - JavaScript (ES6+)
 - TypeScript
 - Local Storage
-- REST Countries API
+- REST Countries API (v5)
 
 ## 🚀 Deployment
+
 The project is live and accessible here:
 
 🔗 **Live Demo:**  
 [Country Explorer](https://malakmuayad11.github.io/CountryExplorer/)
 
 ### Deployment Platform
+
 - GitHub Pages
 
 ## 🚀 How to Run Locally
+
 1. Clone the repository:
    ```bash
    git clone https://github.com/malakmuayad11/CountryExplorer.git
+   ```
 2. Compile TypeScript: npx tsc
 3. Open index.html in your browser
 
 ## 📸 Screenshots
 
 ### 🏠 Home Screen
+
 ![Home Screen](./screenshots/home-screen.png)
 
 ### 🌙 Dark Mode
+
 ![Dark Mode Screen](./screenshots/dark-mode.png)
 
 ### 🔍 Search
+
 ![Search Country](./screenshots/search-country.png)
 
 ### 🌍 Filter
+
 ![Filter by Region](./screenshots/filter-by-region.png)
 
 ### ⭐ Favorites
+
 ![Favorites](./screenshots/favorites.png)
 
 ## 👩‍💻 Author
+
 **Malak Muayad**  
 📧 [malakmuayad15@gmail.com](mailto:malakmuayad15@gmail.com)  
 🔗 [malakmuayad11](https://github.com/malakmuayad11)
