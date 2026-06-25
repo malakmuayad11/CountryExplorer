@@ -49,7 +49,7 @@ The project is live and accessible here:
 
 ### 🏠 Home Screen
 
-![Home Screen](./screenshots/home-screen.png)
+![Home Screen](./screenshots/home-page.png)
 
 ### 🌙 Dark Mode
 
