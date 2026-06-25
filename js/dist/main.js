@@ -39,7 +39,7 @@ function getBorders(country) {
         return "N/A";
     let results = "";
     country.borders.forEach((b) => {
-        results += `<button class="cursor-pointer inline-block w-fit text-[0.65rem] text-center rounded-full border border-muted opacity-90 m-1 hover:opacity-50">${b}</button>`;
+        results += `<button class="cursor-pointer inline-block w-fit text-[0.65rem] text-center rounded-full border border-muted opacity-90 m-1 hover:opacity-50 p-0.5">${b}</button>`;
     });
     return results;
 }
