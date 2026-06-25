@@ -40,7 +40,10 @@ export class Country {
   }
 }
 
-export async function getAllCountries(): Promise<Country[]> {
+export async function getAllCountries(
+  limit: string = "50",
+  offset: string = "0",
+): Promise<Country[]> {
   const urlAll: URL = new URL("https://api.restcountries.com/countries/v5");
 
   urlAll.searchParams.set(
@@ -48,7 +51,8 @@ export async function getAllCountries(): Promise<Country[]> {
     "flag,names,region,capitals,population,languages,borders",
   );
 
-  urlAll.searchParams.set("limit", "100");
+  urlAll.searchParams.set("limit", limit);
+  urlAll.searchParams.set("offset", offset);
 
   try {
     const res: Response = await fetch(urlAll, {

@@ -10,6 +10,8 @@ import {
 
 import { Storage } from "./storage.js";
 
+const PAGE_SIZE = 48;
+
 const UI = {
   countriesContainer: document.getElementById(
     "countries-container",
@@ -24,6 +26,7 @@ const UI = {
   toast: document.getElementById("toast") as HTMLDivElement,
   root: document.documentElement as HTMLElement,
   themeToggleBtn: document.getElementById("themeToggle") as HTMLButtonElement,
+  pagesContainer: document.getElementById("pagesContainer") as HTMLDivElement,
 };
 
 let favoriteCountries: Set<string>;
@@ -49,13 +52,6 @@ function debounce<T extends (...args: any[]) => void>(
     }, delay);
   };
 }
-
-// function getLanguages(country: Country): string {
-//   let results: string = "";
-
-//   for (const [k, v] of Object.entries(country.languages)) results += v + ", ";
-//   return results.slice(0, -2);
-// }
 
 function getLanguages(country: Country): string {
   // Use optional chaining (?.) and a fallback empty array to be completely error-proof
@@ -107,14 +103,19 @@ function setLoading(isLoading: boolean): void {
 }
 
 // loads all countries into the webpage
-async function loadAllCountries(): Promise<void> {
+async function loadAllCountries(offset: string): Promise<void> {
   setLoading(true);
 
   try {
-    const countries: Country[] | undefined = await getAllCountries();
+    const countries: Country[] | undefined = await getAllCountries(
+      PAGE_SIZE.toString(),
+      offset,
+    );
     if (typeof countries === "undefined") return;
 
     UI.countriesContainer.innerHTML = countries.map(fillTemplate).join("");
+    UI.pagesContainer.classList.remove("hidden");
+    UI.filterByRegion.value = "";
   } catch (error) {
     console.log(error);
     UI.countriesContainer.innerHTML = "<p>Failed to load countries</p>";
@@ -126,7 +127,7 @@ async function loadAllCountries(): Promise<void> {
 async function searchCountry(): Promise<void> {
   const countryName: string = UI.searchCountries.value.trim();
   if (countryName === "") {
-    loadAllCountries();
+    loadAllCountries("0");
     return;
   }
   setLoading(true);
@@ -160,7 +161,7 @@ async function searchCountryByCode(countryCode: string): Promise<void> {
 async function filterRegion(): Promise<void> {
   const region: string = UI.filterByRegion.value;
   if (region === "") {
-    loadAllCountries();
+    loadAllCountries("0");
     return;
   }
   setLoading(true);
@@ -171,6 +172,7 @@ async function filterRegion(): Promise<void> {
     if (typeof countries === "undefined") return;
     for (let c of countries) results += fillTemplate(c);
     UI.countriesContainer.innerHTML = results;
+    UI.pagesContainer.classList.add("hidden");
   } catch (error) {
     console.log(error);
   } finally {
@@ -185,6 +187,7 @@ async function showFavoriteCountries(): Promise<void> {
       [...favoriteCountries].map((c) => getCountryByName(c)),
     );
     UI.countriesContainer.innerHTML = countries.map(fillTemplate).join("");
+    handlePagesVisibility(countries.length);
   } catch (error) {
     console.log(error);
   } finally {
@@ -252,19 +255,43 @@ function flipTheme(): void {
   applyTheme(next);
 }
 
+function getCountriesPerPage(pageNumber: number): Promise<void> {
+  const offset: number = (pageNumber - 1) * PAGE_SIZE;
+  return loadAllCountries(offset.toString());
+}
+
+function pagination(event: Event): void {
+  const target = event.target as HTMLElement;
+
+  if (target.classList.contains("btnPage")) {
+    const pageNum: number = parseInt(target.dataset.pageNum!);
+    getCountriesPerPage(pageNum);
+  }
+}
+
+function handlePagesVisibility(dataNumber: number): void {
+  if (dataNumber > PAGE_SIZE) {
+    UI.pagesContainer.classList.add("block");
+    UI.pagesContainer.classList.remove("hidden");
+  } else {
+    UI.pagesContainer.classList.add("hidden");
+    UI.pagesContainer.classList.remove("block");
+  }
+}
+
 // Click handler flips theme
 UI.themeToggleBtn?.addEventListener("click", flipTheme);
 
 // Initialize UI from current attribute or default to light
 applyTheme(Storage.getTheme() || "light");
 
-await loadAllCountries(); // Initialy load all countries in the webpage
+await loadAllCountries("0"); // Initialy load all countries in the webpage
 
 // Adding events for controls
 UI.searchCountries.addEventListener("input", debounce(searchCountry, 800));
 UI.filterByRegion.addEventListener("change", filterRegion);
-debugger;
 UI.countriesContainer.addEventListener("change", handleFavorites);
 UI.favoritesLink.addEventListener("click", showFavoriteCountries);
-UI.allLink?.addEventListener("click", loadAllCountries);
+UI.allLink?.addEventListener("click", () => loadAllCountries("0"));
 UI.countriesContainer.addEventListener("click", clickBorder);
+UI.pagesContainer.addEventListener("click", pagination);

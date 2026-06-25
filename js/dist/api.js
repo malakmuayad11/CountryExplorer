@@ -27,10 +27,11 @@ export class Country {
         });
     }
 }
-export async function getAllCountries() {
+export async function getAllCountries(limit = "50", offset = "0") {
     const urlAll = new URL("https://api.restcountries.com/countries/v5");
     urlAll.searchParams.set("response_fields", "flag,names,region,capitals,population,languages,borders");
-    urlAll.searchParams.set("limit", "100");
+    urlAll.searchParams.set("limit", limit);
+    urlAll.searchParams.set("offset", offset);
     try {
         const res = await fetch(urlAll, {
             headers: {
