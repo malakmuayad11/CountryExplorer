@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "rootDir": "./js/src",
-    "outDir": "./js/dist",
+    "rootDir": "./src/js",
+    "outDir": "./dist/js",
 
     "module": "esnext",
     "target": "es2020",
