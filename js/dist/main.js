@@ -211,6 +211,7 @@ async function clickBorder(e) {
     const element = e.target;
     if (!element.matches(".borders"))
         return;
+    UI.pagesContainer.classList.add("hidden");
     await searchCountryByCode(element.textContent);
 }
 function flipTheme() {

@@ -246,6 +246,7 @@ function handleFavorites(e: Event): void {
 async function clickBorder(e: Event): Promise<void> {
   const element = e.target as HTMLElement;
   if (!element.matches(".borders")) return;
+  UI.pagesContainer.classList.add("hidden");
   await searchCountryByCode(element.textContent);
 }
 
